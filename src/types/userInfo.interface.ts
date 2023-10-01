@@ -6,3 +6,12 @@ export interface UserInfo {
   weight: number | null;
   sex: "female" | "male" | null;
 }
+
+export type Sex = "male" | "female";
+
+export interface UpdateProfilePayload {
+  age: string;
+  height: string;
+  weight: string;
+  sex?: Sex | null;
+}

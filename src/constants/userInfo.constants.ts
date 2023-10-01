@@ -1,4 +1,4 @@
-import { UserInfo } from "@/types/userInfo.interface";
+import { UpdateProfilePayload, UserInfo } from "@/types/userInfo.interface";
 
 export const initialUserInfo: UserInfo = {
   id: "",
@@ -6,5 +6,12 @@ export const initialUserInfo: UserInfo = {
   age: null,
   height: null,
   weight: null,
+  sex: null,
+};
+
+export const initialUpdateProfilePayload: UpdateProfilePayload = {
+  age: "",
+  height: "",
+  weight: "",
   sex: null,
 };

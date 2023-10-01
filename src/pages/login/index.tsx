@@ -56,7 +56,7 @@ const LoginPage = () => {
       setUserInfo(user_info);
       await setLocalStorageItem("access_token", access_token);
 
-      router.push("/");
+      router.push("/home");
     } catch (error) {
       console.log(error);
     }
