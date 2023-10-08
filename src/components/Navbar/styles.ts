@@ -33,7 +33,6 @@ export const useStyles = createStyles(
     userName: {
       fontSize: 14,
       fontWeight: 600,
-      textTransform: "capitalize",
     },
     userRole: {
       fontSize: 12,

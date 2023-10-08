@@ -14,9 +14,10 @@ import React, { ChangeEvent, useState } from "react";
 
 interface ProfileFormModalProps {
   opened: boolean;
+  onClose: () => void;
 }
 
-const ProfileFormModal = ({ opened }: ProfileFormModalProps) => {
+const ProfileFormModal = ({ opened, onClose }: ProfileFormModalProps) => {
   const [updateProfilePayload, setUpdateProfilePayload] =
     useState<UpdateProfilePayload>(initialUpdateProfilePayload);
 
@@ -53,6 +54,7 @@ const ProfileFormModal = ({ opened }: ProfileFormModalProps) => {
       const token = await getLocalStorageItem("access_token");
       const res = await updateProfile(token, updateProfilePayload);
       console.log(res);
+      onClose();
     } catch (error) {
       console.log(error);
     }

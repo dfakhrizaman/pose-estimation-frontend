@@ -48,6 +48,13 @@ export const UserInfoProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await getUserInfo(token);
 
+      if (response.data?.statusCode && response.data.statusCode === 401) {
+        removeLocalStorageItem("access_token");
+        router.replace("/login");
+
+        return;
+      }
+
       const data = response.data;
 
       setData(data);

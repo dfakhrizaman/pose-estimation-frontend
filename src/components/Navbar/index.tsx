@@ -39,7 +39,7 @@ const LoggedInNavbar = ({ userInfo }: { userInfo: UserInfo }) => {
             radius={50}
             width={32}
             height={32}
-            src="https://ecomstudio1.com/wp-content/gallery/pas-photo/IMG_9303.jpg"
+            src="https://media.licdn.com/dms/image/C5103AQE_duq7_sqB_Q/profile-displayphoto-shrink_200_200/0/1581653224285?e=1701302400&v=beta&t=SrciVDmTcS--BMQqhkGjdexmZOaEVek6WvzGqR3KNcM"
             alt="profile"
           />
           <Box>

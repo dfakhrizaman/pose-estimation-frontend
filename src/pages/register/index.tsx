@@ -10,25 +10,35 @@ import {
   Flex,
   Text,
   Anchor,
+  LoadingOverlay,
+  Dialog,
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import {
-  removeLocalStorageItem,
-  setLocalStorageItem,
-} from "@/helpers/localStorage";
-import { login } from "@/services/auth";
+import { setLocalStorageItem } from "@/helpers/localStorage";
+import { register } from "@/services/auth";
 import { useUserInfo } from "@/states/UserInfoContext";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const router = useRouter();
   const { setUserInfo } = useUserInfo();
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [registerSuccess, setRegisterSuccess] = useState(false);
+
+  const showSuccessMessage = () => {
+    setRegisterSuccess(true);
+
+    setTimeout(() => {
+      setRegisterSuccess(false);
+    }, 3000);
+  };
 
   const form = useForm({
     initialValues: {
       username: "",
       password: "",
+      confirmPassword: "",
     },
 
     validate: {
@@ -40,27 +50,41 @@ const LoginPage = () => {
         val.length <= 3
           ? "Password should include at least 3 characters"
           : null,
+      confirmPassword: (val, values) =>
+        val.length <= 3 || values.confirmPassword !== val
+          ? "Password should include at least 3 characters"
+          : null,
     },
   });
 
-  const handleSubmitLogin = form.onSubmit(async () => {
+  const handleSubmitRegister = form.onSubmit(async () => {
+    if (form.values.password !== form.values.confirmPassword) {
+      setErrorMessage("Confirm password must match password.");
+    }
+
     try {
-      const { user_info, access_token } = await login({
+      setIsLoading(true);
+      const { message } = await register({
         username: form.values.username,
         password: form.values.password,
       });
 
-      if (!user_info || !access_token) {
-        setErrorMessage("Failed to login :(");
-
-        return;
+      if (!message) {
+        setErrorMessage("Failed to register");
+        throw new Error("Failed to register :(");
       }
 
-      setUserInfo(user_info);
-      await setLocalStorageItem("access_token", access_token);
+      form.setValues({
+        username: "",
+        password: "",
+        confirmPassword: "",
+      });
 
-      router.push("/home");
+      setIsLoading(false);
+
+      showSuccessMessage();
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   });
@@ -80,7 +104,7 @@ const LoginPage = () => {
       <Paper radius="md" p="xl" withBorder sx={{ minWidth: 400 }}>
         <Text>Fitness Assistant</Text>
 
-        <form onSubmit={handleSubmitLogin}>
+        <form onSubmit={handleSubmitRegister}>
           <Stack>
             <TextInput
               required
@@ -108,20 +132,37 @@ const LoginPage = () => {
               }
               radius="md"
             />
+
+            <PasswordInput
+              required
+              label="Confirm Password"
+              placeholder="Input your password again"
+              value={form.values.confirmPassword}
+              onChange={(event) =>
+                form.setFieldValue("confirmPassword", event.currentTarget.value)
+              }
+              error={form.errors.confirmPassword && "Should match password"}
+              radius="md"
+            />
           </Stack>
 
           <Text c="red">{errorMessage}</Text>
 
           <Group position="apart" mt="xl" align="end">
             <Button type="submit" radius="md">
-              Login
+              Register
             </Button>
-            <Anchor onClick={() => router.push("/register")}>Register</Anchor>
+            <Anchor onClick={() => router.push("/login")}>Login</Anchor>
           </Group>
         </form>
       </Paper>
+
+      <Dialog opened={registerSuccess}>
+        <Text>Congratulation! You have successfully registered.</Text>
+      </Dialog>
+      <LoadingOverlay visible={isLoading} />
     </Flex>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
