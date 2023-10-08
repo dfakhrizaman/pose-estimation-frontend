@@ -25,7 +25,6 @@ export function usePoseNet(input: PosenetInput | any) {
   useEffect(() => {
     (async () => {
       if (!input) {
-        console.log("not yet");
         return [];
       }
 
@@ -42,14 +41,19 @@ export function usePoseNet(input: PosenetInput | any) {
 
 const render =
   (input: PosenetInput, net: PoseNet, setPoses: any) => async () => {
-    const res: Pose[] = await net.estimatePoses(input, {
-      flipHorizontal: true,
-      decodingMethod: "multi-person",
-      maxDetections: multiPoseDetection.maxPoseDetections,
-      scoreThreshold: multiPoseDetection.minPartConfidence,
-      nmsRadius: multiPoseDetection.nmsRadius,
-    });
+    try {
+      const res: Pose[] = await net.estimatePoses(input, {
+        flipHorizontal: true,
+        decodingMethod: "multi-person",
+        maxDetections: multiPoseDetection.maxPoseDetections,
+        scoreThreshold: multiPoseDetection.minPartConfidence,
+        nmsRadius: multiPoseDetection.nmsRadius,
+      });
 
-    setPoses(res);
+      setPoses(res);
+    } catch (error) {
+      console.log(error);
+    }
+
     window.requestAnimationFrame(render(input, net, setPoses));
   };

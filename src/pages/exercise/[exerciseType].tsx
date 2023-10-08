@@ -1,25 +1,54 @@
-import WebcamFrame from "@/components/WebcamFrame";
-import { Flex, Paper, Text, Title } from "@mantine/core";
-import { useRouter } from "next/router";
-import React from "react";
+/* eslint-disable react/no-unescaped-entities */
+import NewWebcam from "@/components/NewWebcam";
+import { Button, Flex, Group, Title } from "@mantine/core";
+import React, { useState } from "react";
 
 const ExercisePage = () => {
-  const router = useRouter();
-
-  const { exerciseType } = router.query;
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
 
   return (
-    <Flex>
-      <Flex sx={{ flexGrow: 1 }}>
-        <WebcamFrame />
-      </Flex>
+    <Flex
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <Group
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <Button onClick={() => setIsCameraOpen(true)}>Start Camera</Button>
+        <Button onClick={() => setIsCameraOpen(false)}>Turn Off Camera</Button>
+      </Group>
 
-      <Paper sx={{ flexGrow: 1 }}>
-        <Title order={2}>
-          {exerciseType === "squat" ? "Squats" : "Jumping Jacks"}
-        </Title>
-        <Text>Counter:</Text>
-      </Paper>
+      <Flex
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {isCameraOpen ? (
+          <Flex sx={{ flexGrow: 1 }}>
+            <NewWebcam />
+          </Flex>
+        ) : (
+          <Group
+            sx={{
+              marginTop: 80,
+            }}
+          >
+            <Title sx={{ textAlign: "center", alignSelf: "center" }}>
+              Press the start button whenever you're ready!
+            </Title>
+          </Group>
+        )}
+      </Flex>
     </Flex>
   );
 };
