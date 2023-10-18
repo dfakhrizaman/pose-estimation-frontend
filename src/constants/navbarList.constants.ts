@@ -12,9 +12,9 @@ export const navbarList = [
   },
   {
     id: 2,
-    label: "Leaderboard",
-    value: "leaderboard",
-    route: "/leaderboard",
+    label: "Activities",
+    value: "activities",
+    route: "/activities",
     icon: MultipleUsers.src,
     color: "#D0EBFF",
   },

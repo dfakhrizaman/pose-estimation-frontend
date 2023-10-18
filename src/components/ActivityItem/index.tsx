@@ -1,77 +1,79 @@
-import {
-  Anchor,
-  Box,
-  Collapse,
-  Flex,
-  Group,
-  Image,
-  Stepper,
-  Text,
-  Title,
-} from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { formattedTimeAndDate } from "@/helpers/stringFormatter";
+import { Box, Flex, Image, Text, Title } from "@mantine/core";
+import Squat from "../../assets/squat.svg";
+import JumpingJack from "../../assets/jumping.svg";
 
-function ActivityItem() {
-  const [opened, { toggle }] = useDisclosure(false);
+interface Props {
+  type: string;
+  score: string;
+  duration: string | number;
+  completed_at: Date;
+  username?: string;
+}
 
-  // if (!order) return <Box />;
+function ActivityItem({
+  type,
+  score,
+  duration,
+  completed_at,
+  username,
+}: Props) {
+  const completedDate = new Date(completed_at);
 
   return (
-    <Box sx={{ marginBottom: 16 }}>
-      <Flex
-        px={30}
-        py={20}
-        sx={{
-          border: "1px solid #E9ECEF",
-          borderRadius: opened ? "10px 10px 0px 0px" : "10px",
-          justifyContent: "space-between",
-        }}
-      >
+    <Flex
+      px={30}
+      py={20}
+      sx={{
+        border: "1px solid #E9ECEF",
+        borderRadius: "10px",
+        justifyContent: "space-between",
+        marginTop: 24,
+      }}
+    >
+      <Box>
         <Title order={2} size={22}>
-          Username
+          {username || "[uname not found]"}
         </Title>
-        <Group>
-          <Flex sx={{ alignItems: "center" }}>
-            {/* <Image
-              height="14px"
-              width="14px"
-              src={MultipleUsers.src}
-              alt="Unit"
-              sx={{ marginRight: 6 }}
-            /> */}
-            <Text>Squat</Text>
-          </Flex>
-          <Flex sx={{ alignItems: "center" }}>
-            {/* <Image
-              height="14px"
-              width="14px"
-              src={Eye.src}
-              alt="Status"
-              sx={{ marginRight: 6 }}
-            /> */}
-            <Text>10/10</Text>
-          </Flex>
 
-          <Anchor onClick={toggle}>{opened ? "Tutup" : "Lihat Detail"}</Anchor>
-        </Group>
-      </Flex>
-
-      <Collapse in={opened}>
-        <Box
-          py={30}
-          px={30}
-          sx={{
-            border: "1px solid #E9ECEF",
-            borderRadius: "0px 0px 10px 10px",
-          }}
-        >
-          <Text mb={10}>Date</Text>
-          <Title order={3} size={18} weight="bold">
-            Status Order
+        <Flex sx={{ alignItems: "center", marginTop: 12, gap: 8 }}>
+          <Image
+            height={24}
+            width={24}
+            src={type === "squat" ? Squat.src : JumpingJack.src}
+            alt={type === "squat" ? "squat" : "jumping jack"}
+          />
+          <Title order={4}>
+            {type === "squat" ? "Squats" : "Jumping Jacks"}
           </Title>
+        </Flex>
+      </Box>
+      <Flex>
+        <Box sx={{ marginRight: 20 }}>
+          <Text>Score:</Text>
+          <Text>Duration:</Text>
+          <Text>Time & Date: </Text>
         </Box>
-      </Collapse>
-    </Box>
+        <Box sx={{ minWidth: 200 }}>
+          <Text
+            sx={{
+              color: score === "10" ? "green" : "orange",
+              fontWeight: 900,
+            }}
+          >
+            {score}/10
+          </Text>
+          <Text
+            sx={{
+              fontWeight: 600,
+            }}
+          >
+            {duration ? `${duration} Seconds` : "-"}
+          </Text>
+          <Text>{formattedTimeAndDate(completedDate)}</Text>
+        </Box>
+      </Flex>
+    </Flex>
   );
 }
 

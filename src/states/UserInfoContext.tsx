@@ -45,6 +45,10 @@ export const UserInfoProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
+    if (data !== initialUserInfo) {
+      return;
+    }
+
     try {
       const response = await getUserInfo(token);
 
@@ -59,7 +63,13 @@ export const UserInfoProvider = ({ children }: { children: ReactNode }) => {
 
       setData(data);
 
-      router.push("/home");
+      if (
+        router.asPath === "/login" ||
+        router.asPath === "/register" ||
+        router.asPath === "/"
+      ) {
+        router.push("/home");
+      }
     } catch (error) {
       console.log(error);
     }

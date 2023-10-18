@@ -29,3 +29,10 @@ export const submitExercise = (token: string, data: SubmitExercisePayload) =>
     token,
     data: data,
   });
+
+  export const getExercises = (token: string) =>
+    requestWrapper({
+      url: `exercises`,
+      method: "GET",
+      token,
+    });
