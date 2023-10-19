@@ -11,15 +11,10 @@ const NewWebcam = () => {
       isVideoPlaying,
       videoRef,
       prediction,
-      mediaStream,
       isModalOpened,
       exerciseType,
     },
   } = useExercises();
-
-  if (!mediaStream) {
-    return null;
-  }
 
   return (
     <>
