@@ -1,5 +1,5 @@
 export interface SubmitExercisePayload {
-  type: "jumping_jack" | "squats";
+  type: "jumping_jack" | "squat";
   duration: number;
   score: number;
 }

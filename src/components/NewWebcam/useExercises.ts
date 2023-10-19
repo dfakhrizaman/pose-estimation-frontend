@@ -72,7 +72,7 @@ const useExercises = () => {
       const token = await getLocalStorageItem("access_token");
 
       submitExercise(token, {
-        type: exerciseType === "squat" ? "squats" : "jumping_jack",
+        type: exerciseType === "squat" ? "squat" : "jumping_jack",
         score: exerciseCount,
         duration: getDuration(timeKeep.startTime!, timeKeep.finishTime!),
       });
