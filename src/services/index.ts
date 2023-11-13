@@ -30,9 +30,23 @@ export const submitExercise = (token: string, data: SubmitExercisePayload) =>
     data: data,
   });
 
-  export const getExercises = (token: string) =>
-    requestWrapper({
-      url: `exercises`,
-      method: "GET",
-      token,
-    });
+export const getExercises = (token: string) =>
+  requestWrapper({
+    url: `exercises`,
+    method: "GET",
+    token,
+  });
+
+export const getUsersLeaderboard = (token: string) =>
+  requestWrapper({
+    url: `users/leaderboard`,
+    method: "GET",
+    token,
+  });
+
+export const getUsersByLatest = (token: string) =>
+  requestWrapper({
+    url: `users/latest-exercise`,
+    method: "GET",
+    token,
+  });
