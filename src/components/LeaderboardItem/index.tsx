@@ -36,8 +36,8 @@ function LeaderboardItem({ number, username, userId, count }: Props) {
         </Title>
       </Box>
       <Box>
-        <Text>Number of exercises in the past 7 days: </Text>
-        <Text sx={{ fontWeight: "bold" }}>{count}</Text>
+        <Text>Past 7 days: </Text>
+        <Text sx={{ fontWeight: "bold" }}>{count} Exercise Sessions</Text>
       </Box>
     </Flex>
   );

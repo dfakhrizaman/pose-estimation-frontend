@@ -5,8 +5,13 @@ import { multiPoseDetection } from "./usePosenet";
 export const videoWidth = 500;
 export const videoHeight = 500;
 
-const average = (array: number[]) =>
-  array.reduce((a, b) => a + b) / array.length;
+export const average = (array: number[]) => {
+  if (array.length === 0) {
+    return 0;
+  }
+
+  return array.reduce((a, b) => a + b) / array.length;
+};
 
 export function predict(poses: posenet.Pose[], exerciseType: string) {
   const maxPose: posenet.Pose = poses.reduce(

@@ -1,6 +1,7 @@
 import { initialUpdateProfilePayload } from "@/constants/userInfo.constants";
 import { getLocalStorageItem } from "@/helpers/localStorage";
 import { updateProfile } from "@/services";
+import { useUserInfo } from "@/states/UserInfoContext";
 import { Sex, UpdateProfilePayload } from "@/types/userInfo.interface";
 import {
   Button,
@@ -18,6 +19,8 @@ interface ProfileFormModalProps {
 }
 
 const ProfileFormModal = ({ opened, onClose }: ProfileFormModalProps) => {
+  const { setUserInfo } = useUserInfo();
+
   const [updateProfilePayload, setUpdateProfilePayload] =
     useState<UpdateProfilePayload>(initialUpdateProfilePayload);
 
@@ -53,6 +56,13 @@ const ProfileFormModal = ({ opened, onClose }: ProfileFormModalProps) => {
     try {
       const token = await getLocalStorageItem("access_token");
       const res = await updateProfile(token, updateProfilePayload);
+      setUserInfo((prev) => ({
+        ...prev,
+        age: Number(updateProfilePayload.age),
+        height: Number(updateProfilePayload.height),
+        weight: Number(updateProfilePayload.weight),
+        sex: updateProfilePayload.sex as "male" | "female",
+      }));
       console.log(res);
       onClose();
     } catch (error) {

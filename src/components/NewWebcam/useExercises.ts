@@ -1,11 +1,19 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { draw, getDuration, predict, videoHeight, videoWidth } from "./utils";
+import {
+  average,
+  draw,
+  getDuration,
+  predict,
+  videoHeight,
+  videoWidth,
+} from "./utils";
 import { useUserMedia } from "./useUserMediaStream";
 import { usePoseNet } from "./usePosenet";
 import { useDisclosure } from "@mantine/hooks";
 import { submitExercise } from "@/services";
 import { getLocalStorageItem } from "@/helpers/localStorage";
+import { SubmitExercisePayload } from "@/types/exercise.interface";
 
 const CAPTURE_OPTIONS = {
   audio: false,
@@ -32,6 +40,7 @@ const useExercises = () => {
     startTime: null,
     finishTime: null,
   });
+  const [accuracyList, setAccuracyList] = useState<number[]>([]);
 
   const { exerciseType } = router.query;
 
@@ -71,12 +80,23 @@ const useExercises = () => {
     try {
       const token = await getLocalStorageItem("access_token");
 
-      submitExercise(token, {
+      const payload: SubmitExercisePayload = {
         type: exerciseType === "squat" ? "squat" : "jumping_jack",
         score: exerciseCount,
         duration: getDuration(timeKeep.startTime!, timeKeep.finishTime!),
-      });
-    } catch (error) {}
+      };
+
+      const newPayload: SubmitExercisePayload = {
+        ...payload,
+        accuracy: average(accuracyList),
+      };
+
+      console.log(newPayload);
+
+      submitExercise(token, payload);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const poses = usePoseNet(videoRef!.current!);
@@ -102,6 +122,7 @@ const useExercises = () => {
         previousPrediction === "standing"
       ) {
         setExerciseCount((prevCount) => prevCount + 1);
+        setAccuracyList((prev) => [...prev, prediction.probability]);
       }
 
       setPreviousPrediction(prediction.message);
@@ -113,6 +134,7 @@ const useExercises = () => {
         previousPrediction === "hands-down"
       ) {
         setExerciseCount((prevCount) => prevCount + 1);
+        setAccuracyList((prev) => [...prev, prediction.probability]);
       }
 
       setPreviousPrediction(prediction.message);
