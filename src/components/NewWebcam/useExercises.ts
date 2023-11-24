@@ -84,14 +84,8 @@ const useExercises = () => {
         type: exerciseType === "squat" ? "squat" : "jumping_jack",
         score: exerciseCount,
         duration: getDuration(timeKeep.startTime!, timeKeep.finishTime!),
-      };
-
-      const newPayload: SubmitExercisePayload = {
-        ...payload,
         accuracy: average(accuracyList),
       };
-
-      console.log(newPayload);
 
       submitExercise(token, payload);
     } catch (error) {
