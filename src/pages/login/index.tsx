@@ -10,6 +10,8 @@ import {
   Flex,
   Text,
   Anchor,
+  Title,
+  LoadingOverlay,
 } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -24,6 +26,7 @@ const LoginPage = () => {
   const router = useRouter();
   const { setUserInfo } = useUserInfo();
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -44,6 +47,8 @@ const LoginPage = () => {
   });
 
   const handleSubmitLogin = form.onSubmit(async () => {
+    setLoading(true);
+
     try {
       const { user_info, access_token } = await login({
         username: form.values.username,
@@ -59,10 +64,13 @@ const LoginPage = () => {
       setUserInfo(user_info);
       await setLocalStorageItem("access_token", access_token);
 
+      setLoading(false);
       router.push("/home");
     } catch (error) {
       console.log(error);
     }
+
+    setLoading(false);
   });
 
   useEffect(() => {
@@ -78,7 +86,9 @@ const LoginPage = () => {
       }}
     >
       <Paper radius="md" p="xl" withBorder sx={{ minWidth: 400 }}>
-        <Text>Fitness Assistant</Text>
+        <Title order={3} sx={{ textAlign: "center" }}>
+          Fitness Assistant
+        </Title>
 
         <form onSubmit={handleSubmitLogin}>
           <Stack>
@@ -113,13 +123,14 @@ const LoginPage = () => {
           <Text c="red">{errorMessage}</Text>
 
           <Group position="apart" mt="xl" align="end">
-            <Button type="submit" radius="md">
-              Login
-            </Button>
             <Anchor onClick={() => router.push("/register")}>Register</Anchor>
+            <Button type="submit" radius="md" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </Button>
           </Group>
         </form>
       </Paper>
+      <LoadingOverlay visible={loading} />
     </Flex>
   );
 };

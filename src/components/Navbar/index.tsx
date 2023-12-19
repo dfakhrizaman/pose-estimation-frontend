@@ -34,14 +34,6 @@ const LoggedInNavbar = ({ userInfo }: { userInfo: UserInfo }) => {
       {/* Bottom Section */}
       <Flex className={classes.userInfoSection}>
         <Flex sx={{ alignItems: "center" }}>
-          <Image
-            mr={10}
-            radius={50}
-            width={32}
-            height={32}
-            src="https://media.licdn.com/dms/image/C5103AQE_duq7_sqB_Q/profile-displayphoto-shrink_200_200/0/1581653224285?e=1701302400&v=beta&t=SrciVDmTcS--BMQqhkGjdexmZOaEVek6WvzGqR3KNcM"
-            alt="profile"
-          />
           <Box>
             <Text className={classes.userName}>{userInfo.username}</Text>
           </Box>

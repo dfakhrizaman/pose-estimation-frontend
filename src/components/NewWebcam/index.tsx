@@ -1,6 +1,17 @@
-import { Box, Button, Flex, Group, Modal, Title } from "@mantine/core";
+import {
+  Anchor,
+  Box,
+  Button,
+  Flex,
+  Group,
+  Modal,
+  Text,
+  Title,
+} from "@mantine/core";
 import { videoHeight, videoWidth } from "./utils";
 import useExercises from "./useExercises";
+import { useState } from "react";
+import { useUserInfo } from "@/states/UserInfoContext";
 
 const NewWebcam = () => {
   const {
@@ -15,6 +26,10 @@ const NewWebcam = () => {
       exerciseType,
     },
   } = useExercises();
+
+  const { userInfo } = useUserInfo();
+
+  const [disableSave, setDisableSave] = useState(true);
 
   return (
     <>
@@ -76,6 +91,20 @@ const NewWebcam = () => {
             You have finished {exerciseCount > 10 ? 10 : exerciseCount}/10{" "}
             {exerciseType === "squat" ? "Squats" : "Jumping Jacks"}!
           </Title>
+
+          <Box my={20}>
+            <Text>
+              Please fill out the form below to enable the save button!
+            </Text>
+            <Anchor
+              href={`https://docs.google.com/forms/d/e/1FAIpQLSej8tWVOdrk7oWapP-rT4fW_Vtf08icDAaPffQ4gJzsYOiz9A/viewform?usp=pp_url&entry.180179664=${userInfo.username}`}
+              target="_blank"
+              onClick={() => setDisableSave(false)}
+            >
+              Post-Exercise Form
+            </Anchor>
+          </Box>
+
           <Flex sx={{ justifyContent: "end" }}>
             <Group
               sx={{
@@ -90,6 +119,7 @@ const NewWebcam = () => {
                   await handleSave();
                   handleGoHome();
                 }}
+                disabled={disableSave}
               >
                 Save and Go Home
               </Button>
