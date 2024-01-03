@@ -97,7 +97,7 @@ const NewWebcam = () => {
               Please fill out the form below to enable the save button!
             </Text>
             <Anchor
-              href={`https://docs.google.com/forms/d/e/1FAIpQLSej8tWVOdrk7oWapP-rT4fW_Vtf08icDAaPffQ4gJzsYOiz9A/viewform?usp=pp_url&entry.180179664=${userInfo.username}`}
+              href={`https://docs.google.com/forms/d/e/1FAIpQLSej8tWVOdrk7oWapP-rT4fW_Vtf08icDAaPffQ4gJzsYOiz9A/viewform?usp=pp_url&entry.180179664=${userInfo.username}&entry.312687180=${exerciseType === 'squat' ? 'Squat' : 'Jumping+Jack'}`}
               target="_blank"
               onClick={() => setDisableSave(false)}
             >
