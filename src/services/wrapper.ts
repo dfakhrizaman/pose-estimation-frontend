@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "https://pose-estimation-backend-production.up.railway.app";
+// const baseUrl = "https://pose-estimation-backend-production.up.railway.app";
+const baseUrl = "https://pose-estimation-backend.railway.com";
 
 const requestWrapper = async function (options: any) {
   const requestHeaders = options.customHeaders || {
